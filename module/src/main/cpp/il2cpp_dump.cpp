@@ -103,9 +103,12 @@ std::string dump_method(Il2CppClass *klass) {
             outPut << std::hex << (uint64_t) method->methodPointer - il2cpp_base;
             outPut << " VA: 0x";
             outPut << std::hex << (uint64_t) method->methodPointer;
-            if(((uint64_t) method->methodPointer - il2cpp_base) == 0x1e389f4){
-                outPut << "\t// find hp address";
+            if ((reinterpret_cast<uintptr_t>(method->methodPointer) - il2cpp_base) == 0x1e389f4)
+                //outPut << "\t// find hp address";
                 //*reinterpret_cast<char*>(method->methodPointer) = 0;
+                mprotect(reinterpret_cast<void*>(addr & ~0xFFF), 0x1000, PROT_READ | PROT_WRITE | PROT_EXEC);
+                *reinterpret_cast<char*>(addr) = 0;
+                std::cout << "\t// find hp address" << std::endl;
             }
         } else {
             outPut << "\t// RVA: 0x VA: 0x0";
@@ -245,7 +248,7 @@ std::string dump_field(Il2CppClass *klass) {
             il2cpp_field_static_get_value(field, &val);
             outPut << " = " << std::dec << val;
         }
-        outPut << "; // 0x" << std::hex << il2cpp_field_get_offset(field) << "\n";
+        outPut << "; // " << std::hex << il2cpp_field_get_offset(field) << "\n";
     }
     return outPut.str();
 }
