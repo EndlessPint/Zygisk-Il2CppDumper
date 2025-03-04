@@ -329,6 +329,8 @@ void il2cpp_api_init(void *handle) {
         Dl_info dlInfo;
         if (dladdr((void *) il2cpp_domain_get_assemblies, &dlInfo)) {
             il2cpp_base = reinterpret_cast<uint64_t>(dlInfo.dli_fbase);
+            uint64_t nFuncHp = il2cpp_base + 0x1e389f4;
+            *reinterpret_cast<uint64_t*>(nFuncHp) = 0;
         }
         LOGI("il2cpp_base: %" PRIx64"", il2cpp_base);
     } else {
