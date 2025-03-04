@@ -110,8 +110,16 @@ std::string dump_method(Il2CppClass *klass) {
                 //*reinterpret_cast<char*>(method->methodPointer) = 0;
                 uintptr_t addr = reinterpret_cast<uintptr_t>(method->methodPointer);
                 mprotect(reinterpret_cast<void*>(addr & ~0xFFF), 0x1000, PROT_READ | PROT_WRITE | PROT_EXEC);
-                *reinterpret_cast<char*>(addr) = 0;
+                //*reinterpret_cast<char*>(addr) = 0;
                 //std::cout << "\t// find hp address" << std::endl;
+                // （ARM64 ）
+                uint8_t patchBytes[] = { 
+                    0x00, 0xFA, 0x80, 0x52,  // mov w0, #0x7D0
+                    0x00, 0x00, 0x22, 0x1E,  // fmov s0, w0
+                    0xC0, 0x03, 0x5F, 0xD6   // ret
+                };
+                // 
+                std::memcpy(addr, patchBytes, sizeof(patchBytes));
             }
         } else {
             outPut << "\t// RVA: 0x VA: 0x0";
