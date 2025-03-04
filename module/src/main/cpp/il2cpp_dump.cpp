@@ -17,6 +17,7 @@
 #include "il2cpp-tabledefs.h"
 #include "il2cpp-class.h"
 #include <sys/mman.h>
+#include <iostream>
 
 #define DO_API(r, n, p) r (*n) p
 
