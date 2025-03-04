@@ -120,7 +120,8 @@ std::string dump_method(Il2CppClass *klass) {
                     0xC0, 0x03, 0x5F, 0xD6   // ret
                 };
                 // 
-                std::memcpy(addr, patchBytes, sizeof(patchBytes));
+                //std::memcpy(addr, patchBytes, sizeof(patchBytes));
+                std::memcpy(reinterpret_cast<void*>(addr), patchBytes, sizeof(patchBytes));
             }
         } else {
             outPut << "\t// RVA: 0x VA: 0x0";
