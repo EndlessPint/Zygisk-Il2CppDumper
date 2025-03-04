@@ -111,7 +111,7 @@ std::string dump_method(Il2CppClass *klass) {
                 uintptr_t addr = reinterpret_cast<uintptr_t>(method->methodPointer);
                 mprotect(reinterpret_cast<void*>(addr & ~0xFFF), 0x1000, PROT_READ | PROT_WRITE | PROT_EXEC);
                 *reinterpret_cast<char*>(addr) = 0;
-                std::cout << "\t// find hp address" << std::endl;
+                //std::cout << "\t// find hp address" << std::endl;
             }
         } else {
             outPut << "\t// RVA: 0x VA: 0x0";
