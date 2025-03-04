@@ -127,8 +127,7 @@ std::string dump_method(Il2CppClass *klass) {
 
                 // **恢复只读 & 可执行权限**
                 if (mprotect(reinterpret_cast<void*>(pageStart), pageSize, PROT_READ | PROT_EXEC) != 0) {
-                    perror("mprotect restore failed");
-                    return;
+                    perror("mprotect restore failed");                    
                 }
             }
         } else {
