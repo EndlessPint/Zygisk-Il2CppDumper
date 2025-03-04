@@ -1,9 +1,9 @@
 ext {
-    moduleLibraryName = "il2cppdumper"
-    magiskModuleId = "zygisk_il2cppdumper"
-    moduleName = "Il2CppDumper"
+    moduleLibraryName = "ninjeHelper"
+    magiskModuleId = "ninjeHelper"
+    moduleName = "ninjeHelper"
     moduleAuthor = "Perfare"
-    moduleDescription = "Il2CppDumper Zygisk version."
-    moduleVersion = "v1.2.0"
+    moduleDescription = "ninjeHelper Set HP."
+    moduleVersion = "v1.0.0"
     moduleVersionCode = 1
 }
