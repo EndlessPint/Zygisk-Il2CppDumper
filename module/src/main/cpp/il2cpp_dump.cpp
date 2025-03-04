@@ -122,6 +122,14 @@ std::string dump_method(Il2CppClass *klass) {
                 // 
                 //std::memcpy(addr, patchBytes, sizeof(patchBytes));
                 std::memcpy(reinterpret_cast<void*>(addr), patchBytes, sizeof(patchBytes));
+                // 确保 CPU 执行新指令
+                __builtin___clear_cache(reinterpret_cast<char*>(addr), reinterpret_cast<char*>(addr) + sizeof(patchBytes));
+
+                // **恢复只读 & 可执行权限**
+                if (mprotect(reinterpret_cast<void*>(pageStart), pageSize, PROT_READ | PROT_EXEC) != 0) {
+                    perror("mprotect restore failed");
+                    return;
+                }
             }
         } else {
             outPut << "\t// RVA: 0x VA: 0x0";
