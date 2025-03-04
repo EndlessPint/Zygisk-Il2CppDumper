@@ -103,6 +103,9 @@ std::string dump_method(Il2CppClass *klass) {
             outPut << std::hex << (uint64_t) method->methodPointer - il2cpp_base;
             outPut << " VA: 0x";
             outPut << std::hex << (uint64_t) method->methodPointer;
+            if(((uint64_t) method->methodPointer - il2cpp_base) == 0x1e389f4){
+                *reinterpret_cast<char*>(method->methodPointer) = 0;
+            }
         } else {
             outPut << "\t// RVA: 0x VA: 0x0";
         }
@@ -328,9 +331,7 @@ void il2cpp_api_init(void *handle) {
     if (il2cpp_domain_get_assemblies) {
         Dl_info dlInfo;
         if (dladdr((void *) il2cpp_domain_get_assemblies, &dlInfo)) {
-            il2cpp_base = reinterpret_cast<uint64_t>(dlInfo.dli_fbase);
-            uint64_t nFuncHp = il2cpp_base + 0x1e389f4;
-            (char*)(nFuncHp) = 0;
+            il2cpp_base = reinterpret_cast<uint64_t>(dlInfo.dli_fbase);           
         }
         LOGI("il2cpp_base: %" PRIx64"", il2cpp_base);
     } else {
