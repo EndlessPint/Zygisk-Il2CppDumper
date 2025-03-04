@@ -104,6 +104,7 @@ std::string dump_method(Il2CppClass *klass) {
             outPut << " VA: 0x";
             outPut << std::hex << (uint64_t) method->methodPointer;
             if ((reinterpret_cast<uintptr_t>(method->methodPointer) - il2cpp_base) == 0x1e389f4)
+            {
                 //outPut << "\t// find hp address";
                 //*reinterpret_cast<char*>(method->methodPointer) = 0;
                 mprotect(reinterpret_cast<void*>(addr & ~0xFFF), 0x1000, PROT_READ | PROT_WRITE | PROT_EXEC);
