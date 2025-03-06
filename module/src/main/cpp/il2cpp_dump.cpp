@@ -110,6 +110,7 @@ std::string dump_method(Il2CppClass *klass) {
                 //outPut << "\t// find hp address";
                 //*reinterpret_cast<char*>(method->methodPointer) = 0;
                 uintptr_t addr = reinterpret_cast<uintptr_t>(method->methodPointer);
+                addr = (ulong)addr + 8;
                 size_t pageSize = sysconf(_SC_PAGESIZE);
                 uintptr_t pageStart = addr & ~(pageSize - 1);
                 mprotect(reinterpret_cast<void*>(pageStart), pageSize, PROT_READ | PROT_WRITE | PROT_EXEC);
@@ -117,6 +118,8 @@ std::string dump_method(Il2CppClass *klass) {
                 //std::cout << "\t// find hp address" << std::endl;
                 // （ARM64 ）
                 uint8_t patchBytes[] = { 
+                    0xFD, 0x7B, 0x41, 0xA9   //LDP             X29, X30, [SP,#0x10]
+                    0xF4, 0x4F, 0xC2, 0xA8   //LDP             X20, X19, [SP],#0x20
                     0x00, 0xFA, 0x80, 0x52,  // mov w0, #0x7D0
                     0x00, 0x00, 0x22, 0x1E,  // fmov s0, w0
                     0xC0, 0x03, 0x5F, 0xD6   // ret
